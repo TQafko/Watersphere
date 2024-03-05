@@ -1,2 +1,5 @@
 RPi.GPIO
-adafruit-ads1x15
+adafruit-blinka
+adafruit-circuitpython-ads1x15
+flask 
+picamera
