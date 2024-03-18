@@ -1,5 +1,5 @@
 % Read the data from the text file
-data = importdata('2024-02-29 10%3A07%3A46.822125.txt'); 
+data = importdata('Channel_0 No Pressure.txt'); 
 
 % Extract the data columns
 channel = data.data(:, 1);
