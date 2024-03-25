@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADC Values</title>
+    <style>
+        .adc-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+            font-family: Arial, sans-serif;
+        }
+        .adc-channel {
+            margin-bottom: 20px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js" integrity="sha512-Y5MDU6RaF5h5HE5BgqJlKkV12kbkbIgWHutcT+XHHNOUzr+HHjWZGC02sqEguuPglmFms3cc08WH2PhQ5rF8Cw==" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port + '/');
+
+        socket.on('connect', function() {
+            console.log('Connected to the server');
+        });
+
+        socket.on('adc_data', function(data) {
+            updateADCValues(data);
+        });
+
+        function updateADCValues(data) {
+            document.getElementById('channel_1').innerText = 'Channel 1: ' + data.channel_1.toFixed(2) + ' V';
+            document.getElementById('channel_2').innerText = 'Channel 2: ' + data.channel_2.toFixed(2) + ' V';
+            document.getElementById('channel_3').innerText = 'Channel 3: ' + data.channel_3.toFixed(2) + ' V';
+            document.getElementById('channel_4').innerText = 'Channel 4: ' + data.channel_4.toFixed(2) + ' V';
+        }
+    </script>
+</head>
+<body>
+    <div class="adc-container">
+        <div class="adc-channel" id="channel_1">Channel 1: - V</div>
+        <div class="adc-channel" id="channel_2">Channel 2: - V</div>
+        <div class="adc-channel" id="channel_3">Channel 3: - V</div>
+        <div class="adc-channel" id="channel_4">Channel 4: - V</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Plotting Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            function createChart(ctx, label, backgroundColor, borderColor) {
+                return new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({ length: 100 }, (_, i) => i + 1),
+                        datasets: [
+                            {
+                                label: label,
+                                data: Array(100).fill(0),
+                                backgroundColor: backgroundColor,
+                                borderColor: borderColor,
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Create a Chart.js instance for each channel
+            var ctx0 = document.getElementById('chart0').getContext('2d');
+            var chart0 = createChart(ctx0, 'Channel 0', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)');
+
+            var ctx1 = document.getElementById('chart1').getContext('2d');
+            var chart1 = createChart(ctx1, 'Channel 1', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)');
+
+            var ctx2 = document.getElementById('chart2').getContext('2d');
+            var chart2 = createChart(ctx2, 'Channel 2', 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)');
+
+            var ctx3 = document.getElementById('chart3').getContext('2d');
+            var chart3 = createChart(ctx3, 'Channel 3', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)');
+
+            function updateData() {
+                // Function to update data every second
+                $.getJSON('/update_data', function(data) {
+                    // Update datasets with new data for each channel
+                    chart0.data.datasets[0].data.push(data.voltages[0]);
+                    chart0.data.datasets[0].data.shift(); // Remove the oldest value
+                    chart0.update(); // Update the chart
+
+                    chart1.data.datasets[0].data.push(data.voltages[1]);
+                    chart1.data.datasets[0].data.shift();
+                    chart1.update();
+
+                    chart2.data.datasets[0].data.push(data.voltages[2]);
+                    chart2.data.datasets[0].data.shift();
+                    chart2.update();
+
+                    chart3.data.datasets[0].data.push(data.voltages[3]);
+                    chart3.data.datasets[0].data.shift();
+                    chart3.update();
+                });
+            }
+
+            // Update data every second
+            setInterval(updateData, 1000);
+        });
+    </script>
+</head>
+<body>
+    <div class="grid-container">
+        <div class="chart-container">
+            <canvas id="chart0"></canvas> <!-- Chart for Channel 0 -->
+        </div>
+        <div class="chart-container">
+            <canvas id="chart1"></canvas> <!-- Chart for Channel 1 -->
+        </div>
+        <div class="chart-container">
+            <canvas id="chart2"></canvas> <!-- Chart for Channel 2 -->
+        </div>
+        <div class="chart-container">
+            <canvas id="chart3"></canvas> <!-- Chart for Channel 3 -->
+        </div>
+    </div>
+    <img src="/video_feed" alt="Live Video Stream">
+</body>
+</html>
