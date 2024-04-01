@@ -41,11 +41,10 @@ def read_channels(adc_channels):
     return temp_arr
 
 def contact():
-    if requests.form.validate_on_submit():
-        if 'Hello' in requests.form:
-            print("Hello")
-        elif 'Hello_else' in requests.form:
-            print("Hello_else")
+    if 'Hello' in requests.form:
+        print("Hello")
+    elif 'Hello_else' in requests.form:
+        print("Hello_else")
 
 def generate_frames():
     with picamera.PiCamera() as camera:
