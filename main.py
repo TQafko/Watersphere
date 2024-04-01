@@ -41,15 +41,11 @@ def read_channels(adc_channels):
     return temp_arr
 
 def contact():
-    if requests.method == 'POST':
-        if requests.form['submit_button'] == 'Do Something':
-            print("Hello") # do something
-        elif requests.form['submit_button'] == 'Do Something Else':
-            print("Hello else") # do something else
-        else:
-            pass # unknown
-    elif requests.method == 'GET':
-        return render_template('index.html')
+    if requests.form.validate_on_submit():
+        if 'Hello' in requests.form:
+            print("Hello")
+        elif 'Hello_else' in requests.form:
+            print("Hello_else")
 
 def generate_frames():
     with picamera.PiCamera() as camera:
@@ -65,6 +61,7 @@ def generate_frames():
 
 @app.route('/')
 def default():
+    contact()
     return render_template('index.html')
 
 @app.route('/update_data')
