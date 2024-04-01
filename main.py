@@ -8,6 +8,10 @@ import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 import picamera
 import io
+import RPi.GPIO as GPIO
+import time
+import motor_controller
+import request
 
 app = Flask(__name__)
 
@@ -35,6 +39,17 @@ def read_channels(adc_channels):
     for idx, channel in enumerate(adc_channels):
         temp_arr[idx] = channel.voltage
     return temp_arr
+
+def contact():
+    if request.method == 'POST':
+        if request.form['submit_button'] == 'Do Something':
+            print("Hello") # do something
+        elif request.form['submit_button'] == 'Do Something Else':
+            print("Hello else") # do something else
+        else:
+            pass # unknown
+    elif request.method == 'GET':
+        return render_template('index.html')
 
 def generate_frames():
     with picamera.PiCamera() as camera:
