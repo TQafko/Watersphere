@@ -60,4 +60,4 @@ def test():
 	GPIO.cleanup()
 	return 0
 
-test()
+# test()

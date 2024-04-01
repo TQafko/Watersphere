@@ -11,7 +11,7 @@ import io
 import RPi.GPIO as GPIO
 import time
 import motor_controller
-import request
+import requests
 
 app = Flask(__name__)
 
@@ -41,14 +41,14 @@ def read_channels(adc_channels):
     return temp_arr
 
 def contact():
-    if request.method == 'POST':
-        if request.form['submit_button'] == 'Do Something':
+    if requests.method == 'POST':
+        if requests.form['submit_button'] == 'Do Something':
             print("Hello") # do something
-        elif request.form['submit_button'] == 'Do Something Else':
+        elif requests.form['submit_button'] == 'Do Something Else':
             print("Hello else") # do something else
         else:
             pass # unknown
-    elif request.method == 'GET':
+    elif requests.method == 'GET':
         return render_template('index.html')
 
 def generate_frames():
