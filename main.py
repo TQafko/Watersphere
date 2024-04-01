@@ -10,7 +10,7 @@ import picamera
 import io
 import RPi.GPIO as GPIO
 import time
-import motor_controller
+from motor_controller import *
 
 app = Flask(__name__)
 
@@ -42,8 +42,15 @@ def read_channels(adc_channels):
 def contact():
     if 'Hello' in request.form:
         print("Hello")
+        set_motor_speed(motor1, 50, 1)
+        time.sleep(1)
     elif 'Hello_else' in request.form:
         print("Hello_else")
+        set_motor_speed(motor2, 50, 1)
+        time.sleep(1)
+    else:
+        stop_motor(motor1)
+        stop_motor(motor2)
 
 def generate_frames():
     with picamera.PiCamera() as camera:

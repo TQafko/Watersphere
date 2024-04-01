@@ -38,6 +38,10 @@ def set_motor_speed(motor, speed, direction):
 		motor[1].ChangeDutyCycle(speed)
 	return 0
 
+def stop_motor(motor):
+	motor[0].ChangeDutyCycle(0)
+	motor[1].ChangeDutyCycle(0)
+
 def test():
 	motor_init(motor1)
 	motor_init(motor2)
