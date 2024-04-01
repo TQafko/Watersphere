@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, Response
+from flask import Flask, render_template, jsonify, Response, request
 import random
 import datetime
 import board
@@ -11,7 +11,6 @@ import io
 import RPi.GPIO as GPIO
 import time
 import motor_controller
-import requests
 
 app = Flask(__name__)
 
@@ -41,9 +40,9 @@ def read_channels(adc_channels):
     return temp_arr
 
 def contact():
-    if 'Hello' in requests.form:
+    if 'Hello' in request.form:
         print("Hello")
-    elif 'Hello_else' in requests.form:
+    elif 'Hello_else' in request.form:
         print("Hello_else")
 
 def generate_frames():
