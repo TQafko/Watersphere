@@ -52,7 +52,7 @@ def generate_frames():
             stream.truncate()
 
 @app.route('/leftWheel')
-def hello():
+def leftWheel():
     print("leftWheel")
     set_motor_speed(motor1, 50, 1)
     time.sleep(1)
@@ -60,7 +60,7 @@ def hello():
     return render_template('index.html')
 
 @app.route('/rightWheel')
-def hello():
+def rightWheel():
     print("rightWheel")
     set_motor_speed(motor2, 50, 1)
     time.sleep(1)
