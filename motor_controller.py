@@ -65,3 +65,5 @@ def test():
 	return 0
 
 # test()
+motor_init(motor1)
+motor_init(motor2)
