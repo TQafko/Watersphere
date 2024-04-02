@@ -39,19 +39,6 @@ def read_channels(adc_channels):
         temp_arr[idx] = channel.voltage
     return temp_arr
 
-def contact():
-    if 'Hello' in request.form:
-        print("Hello")
-        set_motor_speed(motor1, 50, 1)
-        time.sleep(1)
-    elif 'Hello_else' in request.form:
-        print("Hello_else")
-        set_motor_speed(motor2, 50, 1)
-        time.sleep(1)
-    else:
-        stop_motor(motor1)
-        stop_motor(motor2)
-
 def generate_frames():
     with picamera.PiCamera() as camera:
         camera.resolution = (640, 480)
@@ -64,20 +51,32 @@ def generate_frames():
             stream.seek(0)
             stream.truncate()
 
+@app.route('/Hello')
+def hello():
+    # if 'Hello' in request.form:
+    print("Hello")
+    set_motor_speed(motor1, 50, 1)
+    time.sleep(1)
+    # elif 'Hello_else' in request.form:
+    #     print("Hello_else")
+    #     set_motor_speed(motor2, 50, 1)
+    #     time.sleep(1)
+    # else:
+    stop_motor(motor1)
+    stop_motor(motor2)
+
 @app.route('/')
 def default():
-    contact()
     return render_template('index.html')
 
 @app.route('/update_data')
 def update_data():
-    contact()
     voltages = read_channels(adc_channels)
     return jsonify(voltages=voltages)
 
-# @app.route('/video_feed')
-# def video_feed():
-#     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", threaded=True)
