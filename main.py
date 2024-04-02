@@ -51,18 +51,19 @@ def generate_frames():
             stream.seek(0)
             stream.truncate()
 
-@app.route('/Hello')
+@app.route('/leftWheel')
 def hello():
-    # if 'Hello' in request.form:
-    print("Hello")
+    print("leftWheel")
     set_motor_speed(motor1, 50, 1)
     time.sleep(1)
-    # elif 'Hello_else' in request.form:
-    #     print("Hello_else")
-    #     set_motor_speed(motor2, 50, 1)
-    #     time.sleep(1)
-    # else:
     stop_motor(motor1)
+    return render_template('index.html')
+
+@app.route('/rightWheel')
+def hello():
+    print("rightWheel")
+    set_motor_speed(motor2, 50, 1)
+    time.sleep(1)
     stop_motor(motor2)
     return render_template('index.html')
 
