@@ -58,6 +58,7 @@ def leftWheel():
     time.sleep(1)
     stop_motor(motor1)
     # return render_template('index.html')
+    return ['Left Wheel!\n']
 
 @app.route('/rightWheel')
 def rightWheel():
@@ -66,6 +67,7 @@ def rightWheel():
     time.sleep(1)
     stop_motor(motor2)
     # return render_template('index.html')
+    return ['Right Wheel!\n']
 
 @app.route('/')
 def default():
