@@ -55,7 +55,8 @@ def generate_frames():
 def leftWheel():
     print("leftWheel")
     set_motor_speed(motor1, 50, 1)
-    time.sleep(1)
+    for i in 100000:
+        continue
     stop_motor(motor1)
     return render_template('index.html')
 
@@ -63,7 +64,8 @@ def leftWheel():
 def rightWheel():
     print("rightWheel")
     set_motor_speed(motor2, 50, 1)
-    time.sleep(1)
+    for i in 100000:
+        continue
     stop_motor(motor2)
     return render_template('index.html')
 
