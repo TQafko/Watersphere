@@ -64,6 +64,7 @@ def hello():
     # else:
     stop_motor(motor1)
     stop_motor(motor2)
+    return render_template('index.html')
 
 @app.route('/')
 def default():
