@@ -55,19 +55,17 @@ def generate_frames():
 def leftWheel():
     print("leftWheel")
     set_motor_speed(motor1, 50, 1)
-    for i in 100000:
-        continue
+    time.sleep(1)
     stop_motor(motor1)
-    return render_template('index.html')
+    # return render_template('index.html')
 
 @app.route('/rightWheel')
 def rightWheel():
     print("rightWheel")
     set_motor_speed(motor2, 50, 1)
-    for i in 100000:
-        continue
+    time.sleep(1)
     stop_motor(motor2)
-    return render_template('index.html')
+    # return render_template('index.html')
 
 @app.route('/')
 def default():
