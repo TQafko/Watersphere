@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, Response, request
+from flask import Flask, render_template, jsonify, Response, request, redirect
 import random
 import datetime
 import board
@@ -58,7 +58,7 @@ def leftWheel():
     set_motor_speed(motor1, 50, 1)
     time.sleep(1)
     stop_motor(motor1)
-    return render_template('index.html')
+    return redirect('/')
 
 @app.route('/rightWheel')
 def rightWheel():
@@ -66,20 +66,20 @@ def rightWheel():
     set_motor_speed(motor2, 50, 1)
     time.sleep(1)
     stop_motor(motor2)
-    return render_template('index.html')
+    return redirect('/')
 
 # ----------------turn on keep on----------------
 @app.route('/keepleftWheel')
 def keepleftWheel():
     print("keepleftWheel")
     set_motor_speed(motor1, 50, 1)
-    return render_template('index.html')
+    return redirect('/')
 
 @app.route('/keeprightWheel')
 def keeprightWheel():
     print("keerightWheel")
     set_motor_speed(motor2, 50, 1)
-    return render_template('index.html')
+    return redirect('/')
 
 # ----------------turn off----------------
 @app.route('/MotorsOff')
