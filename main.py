@@ -70,20 +70,20 @@ def rightWheel():
 
 # ----------------turn on keep on----------------
 @app.route('/keepleftWheel')
-def leftWheel():
+def keepleftWheel():
     print("keepleftWheel")
     set_motor_speed(motor1, 50, 1)
     return render_template('index.html')
 
 @app.route('/keeprightWheel')
-def rightWheel():
+def keeprightWheel():
     print("keerightWheel")
     set_motor_speed(motor2, 50, 1)
     return render_template('index.html')
 
 # ----------------turn off----------------
 @app.route('/MotorsOff')
-def leftWheel():
+def motorsOff():
     print("MotorsOff")
     stop_motor(motor1)
     stop_motor(motor2)
