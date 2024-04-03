@@ -87,7 +87,7 @@ def motorsOff():
     print("MotorsOff")
     stop_motor(motor1)
     stop_motor(motor2)
-    return 200
+    return jsonify({'MotorState': 0})
 
 #--------------------------------
 @app.route('/')
