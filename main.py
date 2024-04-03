@@ -58,7 +58,7 @@ def leftWheel():
     set_motor_speed(motor1, 50, 1)
     time.sleep(1)
     stop_motor(motor1)
-    return 200
+    # return 200
 
 @app.route('/rightWheel')
 def rightWheel():
@@ -66,20 +66,20 @@ def rightWheel():
     set_motor_speed(motor2, 50, 1)
     time.sleep(1)
     stop_motor(motor2)
-    return 200
+    # return 200
 
 # ----------------turn on keep on----------------
 @app.route('/keepleftWheel')
 def keepleftWheel():
     print("keepleftWheel")
     set_motor_speed(motor1, 50, 1)
-    return 200
+    # return 200
 
 @app.route('/keeprightWheel')
 def keeprightWheel():
     print("keerightWheel")
     set_motor_speed(motor2, 50, 1)
-    return 200
+    # return 200
 
 # ----------------turn off----------------
 @app.route('/MotorsOff')
@@ -87,7 +87,7 @@ def motorsOff():
     print("MotorsOff")
     stop_motor(motor1)
     stop_motor(motor2)
-    return jsonify({'MotorState': 0})
+    
 
 #--------------------------------
 @app.route('/')
