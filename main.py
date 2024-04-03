@@ -51,14 +51,14 @@ def generate_frames():
             stream.seek(0)
             stream.truncate()
 
+# ----------------click motors----------------
 @app.route('/leftWheel')
 def leftWheel():
     print("leftWheel")
     set_motor_speed(motor1, 50, 1)
     time.sleep(1)
     stop_motor(motor1)
-    # return render_template('index.html')
-    return ['Left Wheel!\n']
+    return render_template('index.html')
 
 @app.route('/rightWheel')
 def rightWheel():
@@ -66,9 +66,30 @@ def rightWheel():
     set_motor_speed(motor2, 50, 1)
     time.sleep(1)
     stop_motor(motor2)
-    # return render_template('index.html')
-    return ['Right Wheel!\n']
+    return render_template('index.html')
 
+# ----------------turn on keep on----------------
+@app.route('/keepleftWheel')
+def leftWheel():
+    print("keepleftWheel")
+    set_motor_speed(motor1, 50, 1)
+    return render_template('index.html')
+
+@app.route('/keeprightWheel')
+def rightWheel():
+    print("keerightWheel")
+    set_motor_speed(motor2, 50, 1)
+    return render_template('index.html')
+
+# ----------------turn off----------------
+@app.route('/MotorsOff')
+def leftWheel():
+    print("MotorsOff")
+    stop_motor(motor1)
+    stop_motor(motor2)
+    return render_template('index.html')
+
+#--------------------------------
 @app.route('/')
 def default():
     return render_template('index.html')
