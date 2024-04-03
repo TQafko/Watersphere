@@ -52,7 +52,7 @@ def generate_frames():
             stream.truncate()
 
 # ----------------click motors----------------
-@app.route('/leftWheel')
+@app.route('/leftWheel', methods=['POST'])
 def leftWheel():
     print("leftWheel")
     set_motor_speed(motor1, 50, 1)
@@ -60,7 +60,7 @@ def leftWheel():
     stop_motor(motor1)
     # return 200
 
-@app.route('/rightWheel')
+@app.route('/rightWheel', methods=['POST'])
 def rightWheel():
     print("rightWheel")
     set_motor_speed(motor2, 50, 1)
@@ -69,20 +69,20 @@ def rightWheel():
     # return 200
 
 # ----------------turn on keep on----------------
-@app.route('/keepleftWheel')
+@app.route('/keepleftWheel', methods=['POST'])
 def keepleftWheel():
     print("keepleftWheel")
     set_motor_speed(motor1, 50, 1)
     # return 200
 
-@app.route('/keeprightWheel')
+@app.route('/keeprightWheel', methods=['POST'])
 def keeprightWheel():
     print("keerightWheel")
     set_motor_speed(motor2, 50, 1)
     # return 200
 
 # ----------------turn off----------------
-@app.route('/MotorsOff')
+@app.route('/MotorsOff', methods=['POST'])
 def motorsOff():
     print("MotorsOff")
     stop_motor(motor1)
