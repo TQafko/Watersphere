@@ -58,7 +58,7 @@ def leftWheel():
     set_motor_speed(motor1, 50, 1)
     time.sleep(1)
     stop_motor(motor1)
-    return redirect(url_for('/'))
+    return ''
 
 @app.route('/rightWheel', methods=['POST'])
 def rightWheel():
@@ -66,20 +66,20 @@ def rightWheel():
     set_motor_speed(motor2, 50, 1)
     time.sleep(1)
     stop_motor(motor2)
-    return redirect(url_for('/'))
+    return ''
 
 # ----------------turn on keep on----------------
 @app.route('/keepleftWheel', methods=['POST'])
 def keepleftWheel():
     print("keepleftWheel")
     set_motor_speed(motor1, 50, 1)
-    return redirect(url_for('/'))
+    return ''
 
 @app.route('/keeprightWheel', methods=['POST'])
 def keeprightWheel():
     print("keerightWheel")
     set_motor_speed(motor2, 50, 1)
-    return redirect(url_for('/'))
+    return ''
 
 # ----------------turn off----------------
 @app.route('/MotorsOff', methods=['POST'])
@@ -87,7 +87,9 @@ def motorsOff():
     print("MotorsOff")
     stop_motor(motor1)
     stop_motor(motor2)
-    return redirect(url_for('/'))
+    r = Response()
+    r.set_cookie("My important cookie", value=0)
+    return r, 204
     
 
 #--------------------------------
