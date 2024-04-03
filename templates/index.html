@@ -107,6 +107,15 @@
             var ctx3 = document.getElementById('chart3').getContext('2d');
             var chart3 = createChart(ctx3, 'Channel 3', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)');
 
+            var ctx4 = document.getElementById('chart4').getContext('2d');
+            var chart4 = createChart(ctx4, 'Channel 4', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)');
+
+            var ctx5 = document.getElementById('chart5').getContext('2d');
+            var chart5 = createChart(ctx5, 'Channel 5', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)');
+
+            var ctx6 = document.getElementById('chart6').getContext('2d');
+            var chart6 = createChart(ctx6, 'Channel 6', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)');
+
             function updateData() {
                 // Function to update data every second
                 $.getJSON('/update_data', function(data) {
@@ -129,12 +138,28 @@
                 });
             }
 
-            function motorsOff(){
-                $.getJSON('/MotorsOff', function(data) {});
+            function updateIMU() {
+                // Function to update data every second
+                $.getJSON('/update_imu', function(data) {
+                    // Update datasets with new data for each channel
+                    chart4.data.datasets[0].data.push(data.imu[0]);
+                    chart4.data.datasets[0].data.shift(); // Remove the oldest value
+                    chart4.update(); // Update the chart
+
+                    chart5.data.datasets[0].data.push(data.imu[1]);
+                    chart5.data.datasets[0].data.shift(); // Remove the oldest value
+                    chart5.update(); // Update the chart
+
+                    chart5.data.datasets[0].data.push(data.imu[2]);
+                    chart5.data.datasets[0].data.shift(); // Remove the oldest value
+                    chart5.update(); // Update the chart
+
+                });
             }
 
             // Update data every second
             setInterval(updateData, 1000);
+            setInterval(updateIMU, 500);
         });
     </script>
 </head>
@@ -151,6 +176,15 @@
         </div>
         <div class="chart-container">
             <canvas id="chart3"></canvas> <!-- Chart for Channel 3 -->
+        </div>
+        <div class="chart-container">
+            <canvas id="chart4"></canvas> <!-- Chart for Channel 4 -->
+        </div>
+        <div class="chart-container">
+            <canvas id="chart5"></canvas> <!-- Chart for Channel 4 -->
+        </div>
+        <div class="chart-container">
+            <canvas id="chart6"></canvas> <!-- Chart for Channel 4 -->
         </div>
         <!-- ----------------------- -->
         <form method="post" action="/leftWheel">

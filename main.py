@@ -11,6 +11,7 @@ import io
 import RPi.GPIO as GPIO
 import time
 from motor_controller import *
+from imu import *
 
 app = Flask(__name__)
 
@@ -20,7 +21,7 @@ try:
     ads = ADS.ADS1115(i2c)
 except:
     print("Error Initializing I2C Bus")
-    exit()
+    # exit()
 
 channel0 = AnalogIn(ads, ADS.P0)
 channel1 = AnalogIn(ads, ADS.P1)
@@ -101,6 +102,11 @@ def default():
 def update_data():
     voltages = read_channels(adc_channels)
     return jsonify(voltages=voltages)
+
+@app.route('/update_imu')
+def update_imu():
+    imu = bno_get_quat()
+    return jsonify(imu=imu)
 
 @app.route('/video_feed')
 def video_feed():
