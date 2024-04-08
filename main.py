@@ -11,7 +11,7 @@ import io
 import RPi.GPIO as GPIO
 import time
 from motor_controller import *
-from imu import *
+# from imu import *
 
 app = Flask(__name__)
 
@@ -88,8 +88,8 @@ def motorsOff():
     print("MotorsOff")
     stop_motor(motor1)
     stop_motor(motor2)
-    r = Response()
-    r.set_cookie("My important cookie", value=0)
+    # r = Response()
+    # r.set_cookie("My important cookie", value=0)
     return redirect('/')
     
 
@@ -103,10 +103,10 @@ def update_data():
     voltages = read_channels(adc_channels)
     return jsonify(voltages=voltages)
 
-@app.route('/update_imu')
-def update_imu():
-    imu = bno_get_quat()
-    return jsonify(imu=imu)
+# @app.route('/update_imu')
+# def update_imu():
+#     imu = bno_get_quat()
+#     return jsonify(imu=imu)
 
 @app.route('/video_feed')
 def video_feed():
