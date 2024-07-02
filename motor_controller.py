@@ -64,6 +64,6 @@ def test():
 	GPIO.cleanup()
 	return 0
 
-# test()
+#test()
 motor_init(motor1)
 motor_init(motor2)
