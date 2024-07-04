@@ -25,6 +25,10 @@
                 <p>ADC Chn2: <strong id="ch2">0</strong> Volts</p>
                 <p>ADC Chn3: <strong id="ch3">0</strong> Volts</p>
                 <p>ADC Chn4: <strong id="ch4">0</strong> Volts</p>
+                <p>Orientation: <br> Roll: <strong id="roll">0</strong> &deg 
+                    Pitch: <strong id="pitch">0</strong> &deg 
+                    Yaw: <strong id="yaw">0</strong> &deg 
+                </p>
                 <p>Pressure: <strong id="pressure">0</strong> mBar</p>
                 <p>Turbidity: <strong id="turbidity">0</strong> mBar</p>
                 <div id="map" style="height: 480px;width:480px;"></div>
@@ -106,7 +110,11 @@
             const ch2Pts = document.getElementById("ch2");
             const ch3Pts = document.getElementById("ch3");
             const ch4Pts = document.getElementById("ch4");
+            const roll = document.getElementById("roll");
+            const pitch = document.getElementById("pitch");
+            const yaw = document.getElementById("yaw");
             const dataPressure = document.getElementById("pressure");
+            const dataTurbidity = document.getElementById("turbidity");
 
             setInterval(function() {
                 fetch("/update_data").then(function(response){
@@ -116,7 +124,13 @@
                     ch2Pts.textContent = data.voltages[1];
                     ch3Pts.textContent = data.voltages[2];
                     ch4Pts.textContent = data.voltages[3];
-                    dataPressure.textContent = 0.0;
+                    if (data.orientation[0]!=-1){
+                        roll.textContent = data.orientation[0];
+                        pitch.textContent= data.orientation[1];
+                        yaw.textContent  = data.orientation[2];   
+                    }
+                    dataPressure.textContent = data.pressure;
+                    dataTurbidity.textContent = data.turbidity;
                 }).catch(function (error){
                     console.log(error);
                 });
@@ -184,11 +198,12 @@
         
 
         .data p{
-            margin-left: 10%;
-            width: 35%;
+            margin-left: 20%;
+            width: 45%;
             align-items: left;
             justify-content: left;
             text-align: left;
+            margin: .2em;
         }
 
 

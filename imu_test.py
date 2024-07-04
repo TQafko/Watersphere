@@ -37,11 +37,25 @@ bno.enable_feature(adafruit_bno08x.BNO_REPORT_MAGNETOMETER)
 bno.enable_feature(adafruit_bno08x.BNO_REPORT_ROTATION_VECTOR)
 
 
+
 def bno_get_quat():
     # mag_x, mag_y, mag_z = bno.magnetic
     # gyro_x, gyro_y, gyro_z = bno.gyro
     # accel_x, accel_y, accel_z = bno.acceleration
-    quat_i, quat_j, quat_k, quat_real = bno.quaternion
+    try:
+        quat_i, quat_j, quat_k, quat_real = bno.quaternion
+    except Exception as e:
+        print("Error runtime")
+        return
     roll_x, pitch_y, yaw_z = euler_from_quaternion(quat_i, quat_j, quat_k, quat_real)
+    roll_x = math.degrees(roll_x)
+    pitch_y = math.degrees(pitch_y)
+    yaw_z = math.degrees(yaw_z)
     # print("I: %0.6f  J: %0.6f K: %0.6f  Real: %0.6f" % (quat_i, quat_j, quat_k, quat_real))
     print("Roll: %0.2f  Pitch: %0.2f Yaw: %0.2f" % (roll_x, pitch_y, yaw_z))
+
+
+while(1):
+    bno_get_quat()
+    print("Waiting...\n")
+    time.sleep(1)

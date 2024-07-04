@@ -10,8 +10,9 @@ import picamera
 import io
 import RPi.GPIO as GPIO
 import time
+import bno008
 from motor_controller import *
-# from imu import *
+
 
 app = Flask(__name__)
 
@@ -19,8 +20,9 @@ app = Flask(__name__)
 try:
     i2c = busio.I2C(board.SCL, board.SDA)
     ads = ADS.ADS1115(i2c)
+    imu = bno008.bno008(i2c)
 except:
-    print("Error Initializing I2C Bus")
+    print("Error Initializing I2C devices")
     # exit()
 
 channel0 = AnalogIn(ads, ADS.P0)
@@ -29,6 +31,7 @@ channel2 = AnalogIn(ads, ADS.P2)
 channel3 = AnalogIn(ads, ADS.P3)
 adc_channels = [channel0, channel1, channel2, channel3]
 adc_voltages = np.zeros((4, 100))
+roll, pitch, yaw = imu.get_orientation()
 
 # Time Variables
 dt = datetime.datetime.now()
@@ -37,7 +40,7 @@ dt = datetime.datetime.now()
 def read_channels(adc_channels):
     temp_arr = [0, 0, 0, 0]
     for idx, channel in enumerate(adc_channels):
-        temp_arr[idx] = channel.voltage
+        temp_arr[idx] = round(channel.voltage, 4)
     return temp_arr
 
 def generate_frames():
@@ -59,12 +62,19 @@ def default():
 
 @app.route('/update_data')
 def update_data():
-    voltages = read_channels(adc_channels)
-    return jsonify(voltages=voltages)
+    ch1,ch2,ch3,ch4 = read_channels(adc_channels)
+    pressure = ch1*2
+    turbidity = ch2*2
 
-@app.route('/members')
-def members():
-    return {"members": ["Member1", "Member2", "Member3"]}
+    response = {
+        "voltages": (ch1,ch2,ch3,ch4),
+        "orientation": (imu.get_orientation()),
+        "pressure": (pressure),
+        "turbidity": (turbidity)
+    }
+    res = make_response(jsonify(response))
+    # voltages = (read_channels(adc_channels),imu.get_orientation())
+    return res
 
 # @app.route('/update_imu')
 # def update_imu():
