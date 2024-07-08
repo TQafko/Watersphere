@@ -1,91 +1,77 @@
+# Tedi Qafko Date:7/7/2024
+# Description: Control L298N motor driver 
 import RPi.GPIO as GPIO
-from time import sleep
+import time
 
-in1 = 6
-in2 = 19
-in4 = 0
-in3 = 5
-
-en1 = 12
-en2 = 13
-temp1 = 1
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(in1, GPIO.OUT)
-GPIO.setup(in2, GPIO.OUT)
-GPIO.setup(in3, GPIO.OUT)
-GPIO.setup(in4, GPIO.OUT)
-GPIO.setup(en1, GPIO.OUT)
-GPIO.setup(en2, GPIO.OUT)
-GPIO.output(in1, GPIO.LOW)
-GPIO.output(in2, GPIO.LOW)
-GPIO.output(in3, GPIO.LOW)
-GPIO.output(in4, GPIO.LOW)
-p1 = GPIO.PWM(en1, 1000)
-p2 = GPIO.PWM(en2, 1000)
-p1.start(25)
-p2.start(0)
-
-print("\n")
-print("r-run, s-stop, f-forward, b-backward, l-low, m-medium, h-high, e-exit")
-print("\n")
-
-while(1):
-    x = input()
-    if x == 'r':
-        print("run")
-        if(temp1 == 1):
-            GPIO.output(in1, GPIO.HIGH)
-            GPIO.output(in2, GPIO.LOW)
-            GPIO.output(in3,GPIO.HIGH)
-            GPIO.output(in4, GPIO.LOW)
-            print("forward")
-            x = 'z'
-        else:
-            GPIO.output(in1, GPIO.LOW)
-            GPIO.output(in2, GPIO.HIGH)
-            GPIO.output(in3, GPIO.LOW)
-            GPIO.output(in4, GPIO.HIGH)
-            print("backward")
-            x = 'z'
-    elif x == 's':
-        print("stop")
+class Motor:
+    '''
+    IN pins - Control rotation direction of motors
+    EN pin -  Expects pwm to control speed or 0 or 1 for off or full speed
+    Setup m1: in1 = 6, in2 = 19, en1 = 12
+    Setup m2: in3 = 5, in5 = 0, en2 = 13
+    '''
+    def __init__(self,
+                 in1 = 6,
+                 in2 = 19,
+                 en1 = 12,
+                 pwm = 1000,
+                 init_m1 = 0): # this is duty cycle of pwm
+        
+        self.in1 = in1
+        self.in2 = in2
+        self.en1 = en1
+        self.pwm = pwm
+        self.init_m1 = init_m1
+        print("Initilizing GPIO for motors...\n")
+        GPIO.setmode(GPIO.BCM) # Defines pi pins as diagrams
+        GPIO.setup(in1, GPIO.OUT) # Setting all pins to output
+        GPIO.setup(in2, GPIO.OUT)
+        GPIO.setup(en1, GPIO.OUT)
+        # (IN) pins are two bit logic for clockwise, counter-clockwise
+        # and stopping a motor
         GPIO.output(in1, GPIO.LOW)
         GPIO.output(in2, GPIO.LOW)
-        GPIO.output(in3, GPIO.LOW)
-        GPIO.output(in4, GPIO.LOW)
-    elif x == 'f':
-        print("forward")
-        GPIO.output(in1, GPIO.HIGH)
-        GPIO.output(in2, GPIO.LOW)
-        GPIO.output(in3, GPIO.HIGH)
-        GPIO.output(in4, GPIO.LOW)
-        temp1 = 1
-        x = 'z'
-    elif x == 'b':
-        print("backward")
-        GPIO.output(in1, GPIO.LOW)
-        GPIO.output(in2, GPIO.HIGH)
-        GPIO.output(in3, GPIO.LOW)
-        GPIO.output(in4, GPIO.HIGH)
-        temp1 = 0
-        x = 'z'
-    elif x == 'l':
-        print("low")
-        p1.ChangeDutyCycle(25)
-        p2.ChangeDutyCycle(25)
-        x = 'z'
-    elif x == 'm':
-        print("medium")
-        p1.ChangeDutyCycle(50)
-        p2.ChangeDutyCycle(50)
-        x = 'z'
-    elif x == 'h':
-        print("high")
-        p1.ChangeDutyCycle(75)
-        p2.ChangeDutyCycle(75)
-    elif x == 'e':
+        # (EN) pins enable changing the speed of the motor via 
+        # pulse width modulated (PWM) signals
+        self.p1 = GPIO.PWM(en1, pwm)
+        # Initially the motors will be set to 0.
+        self.p1.start(init_m1)
+        print("Motors initated Successfully!\n")
+
+    def stop(self):
+        print("Stop")
+        GPIO.output(self.in1, GPIO.LOW)
+        GPIO.output(self.in2, GPIO.LOW)
+
+    def forward(self):
+        print("Forward")
+        GPIO.output(self.in1, GPIO.HIGH)
+        GPIO.output(self.in2, GPIO.LOW)
+
+    def backward(self):
+        print("Backward")
+        GPIO.output(self.in1, GPIO.LOW)
+        GPIO.output(self.in2, GPIO.HIGH)
+
+    def speed(self, cycle=25):
+        ''' Duty Cycle is between 0-100 with 100 being the fastest'''
+        print(f"Changing speed: ", cycle)
+        self.p1.ChangeDutyCycle(cycle)
+
+    def shutdown(self):
+        '''This cleans up all GPIO, only run if needed'''
         GPIO.cleanup()
-        break
-    else:
-        print("Wrong Data")
+
+    def test_motor(self):
+        '''Runs motor for 2 seconds at 25 duty cycle'''
+        print("Start Test\n")
+        self.forward()
+        self.speed(25)
+        time.sleep(2)
+        self.backward()
+        time.sleep(2)
+        self.stop()
+        self.speed(0)
+        print("Stop Test\n")
+        time.sleep(2)
+        print("Success!\n")
