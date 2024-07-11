@@ -26,4 +26,4 @@ PCB Files can be found here: https://github.com/blanchardp2ATWIT/Watersphere_MOB
 
 
 ### Graphical user interface(GUI):
-![watersphere_front_interface](https://github.com/TQafko/Watersphere/assets/92730555/c04dd29c-a29c-4fb3-88ab-edfe83afc07f)
+![watersphere_front_interface_2](https://github.com/TQafko/Watersphere/assets/92730555/aa8ef27d-451e-4c9b-884b-530b6d11f827)
