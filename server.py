@@ -12,7 +12,7 @@ import RPi.GPIO as GPIO
 import time
 import bno008
 from motor_controller import *
-
+import geocoder
 
 app = Flask(__name__)
 
@@ -65,12 +65,16 @@ def update_data():
     ch1,ch2,ch3,ch4 = read_channels(adc_channels)
     pressure = ch1*2
     turbidity = ch2*2
-
+    g = geocoder.ip('me')  
+    latitude = g.lat
+    longitude = g.lng
     response = {
         "voltages": (ch1,ch2,ch3,ch4),
         "orientation": (imu.get_orientation()),
         "pressure": (pressure),
-        "turbidity": (turbidity)
+        "turbidity": (turbidity),
+        "longitude": (longitude),
+        "latitude": (latitude)
     }
     res = make_response(jsonify(response))
     # voltages = (read_channels(adc_channels),imu.get_orientation())

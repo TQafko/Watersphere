@@ -3,6 +3,7 @@
 # Class object for inertial measurement unit device BNO085 for 
 # receiving data of orientation
 
+#define BNO08x_I2CADDR_DEFAULT 0x4A 
 class bno008:
     import board
     from busio import I2C
